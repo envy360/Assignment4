@@ -18,8 +18,12 @@ bool Graph::hasTripletClique() const {
 
 // Complete this
 bool Graph::isConnected() const {
-    // To do
-    return false;
+    bool connected = true;
+    for (auto it : nodes_) {
+        if ( (it.second)->getNeighbors().size() == 0 ) connected = false;
+        // std::cout << (it.second)->getNeighbors().size() << "\n";
+    }
+    return connected;
 }
 
 // Complete this

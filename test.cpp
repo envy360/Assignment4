@@ -24,6 +24,39 @@
 
 bool isDoubleEqual(double d1, double d2) { return fabs(d1 - d2) <= 0.00001; }
 
+void test_case_0() {
+    Graph g(false);
+
+    g.addNode("A");
+    g.addNode("B");
+    g.addNode("C");
+
+    g.addEdge("A", "B", 1.0);
+    g.addEdge("C", "B", 1.0);
+
+    g.printGraph();
+    bool isConnected = g.isConnected();
+    std::cout << "isConnected = " << isConnected << std::endl;
+    ASSERT(!isConnected, "isConnected = " << (isConnected ? "true" : "false"));
+
+    /*
+    bool hasTripletClique = g.hasTripletClique();
+    ASSERT(!hasTripletClique,
+           "hasTripletClique = " << (hasTripletClique ? "true" : "false"));
+
+    double distAB = g.getMinDistance("A", "B");
+    ASSERT(isDoubleEqual(distAB, 1.0), "distAB = " << distAB);
+
+    double distAC = g.getMinDistance("A", "C");
+    ASSERT(isinf(distAC), "distAC = " << distAC);
+
+    double longestPath = g.getLongestSimplePath();
+    ASSERT(isDoubleEqual(longestPath, 1.0), "longestPath = " << longestPath);
+     */
+
+    std::cout << "Test case 1 passed" << std::endl;
+}
+
 void test_case_1() {
     Graph g(false);
 
@@ -123,8 +156,9 @@ void test_case_3() {
 }
 
 int main() {
-    test_case_1();
-    test_case_2();
-    test_case_3();
+    test_case_0();
+    // test_case_1();
+    // test_case_2();
+    // test_case_3();
     return 0;
 }
