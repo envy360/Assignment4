@@ -5,27 +5,39 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <queue>
 
 #include "edge.hpp"
 #include "node.hpp"
 
-// Complete this
+
 bool Graph::hasTripletClique() const {
+    // Not possible to have TripletClique if less than 3 nodes
     if (nodes_.size() < 3) return false;
+    // For each node in the graph
     for (auto it : nodes_) {
+        // Get the Node pointer to that node
         Node *node = it.second;
+        // To get the number of neighbouring nodes (sizeNeighbour)
         size_t sizeNeighbour = (it.second)->getNeighbors().size();
+
         if ( sizeNeighbour >= 2 ) {
             // Only if this node has >= 2 neighbour, it can possibly form a triplet
             // std::cout << "neighbourSize = " << sizeNeighbour << "\n";
+
+            // Now get the IDs (name) of all its neighbours into a vector
             std::vector<std::string> neiIDs;
             neiIDs.reserve(sizeNeighbour);
             for (Node *neighbor : node->getNeighbors()) {
                 neiIDs.push_back(neighbor->getID());
             }
+
+            // For each node (neiNode) in the focused node's neightbour
             for (size_t i = 0; i < sizeNeighbour; i++) {
                 Node *neiNode = nodes_.find(neiIDs[i])->second;
                 for (size_t j = i+1; j < sizeNeighbour; j++){
+                    // check all the rest of the neighbour nodes to see if they also in the
+                    // neiNode's neighbour (if it does than there's a TripletClique
                     if ( (neiNode->getNeighbors()).count(nodes_.find(neiIDs[j])->second) != 0 )
                         return true;
                 }
@@ -37,12 +49,37 @@ bool Graph::hasTripletClique() const {
 
 // Complete this
 bool Graph::isConnected() const {
+    /*
     bool connected = true;
     for (auto it : nodes_) {
         if ( (it.second)->getNeighbors().size() == 0 ) connected = false;
-        std::cout << (it.second)->getNeighbors().size() << "\n";
+        // std::cout << (it.second)->getNeighbors().size() << "\n";
     }
     return connected;
+     */
+    // First degree check: to see if any node not having neighbour
+    for (auto it : nodes_) {
+        if ( (it.second)->getNeighbors().size() == 0 ) return false;
+        // std::cout << (it.second)->getNeighbors().size() << "\n";
+
+        // Set visited = false
+        (it.second)->setVisited(false);
+    }
+
+    // Doing BFS to see if every node is visited; starting from 1st node in the Graph
+    // Get the Node* to the first node in the Adjacent Link List
+    Node* snode = (nodes_.begin())->second;
+    // Start an empty queue
+    queue<Node*> bfsqueue;
+    // Set source node visited and Enqueue source node
+    snode->setVisited(true);
+    bfsqueue.push(snode);
+    // BFS
+    while ( !bfsqueue.empty()){
+
+    }
+
+
 }
 
 // Complete this

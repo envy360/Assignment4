@@ -43,6 +43,6 @@ private:
     bool visited_;
     std::set<Node*> neighbors_;
     std::set<Edge*> adjacents_;
-};
+}
 
 #endif  // NODE_HPP
