@@ -12,7 +12,26 @@
 // Complete this
 bool Graph::hasTripletClique() const {
     if (nodes_.size() < 3) return false;
-    // To do
+    for (auto it : nodes_) {
+        Node *node = it.second;
+        size_t sizeNeighbour = (it.second)->getNeighbors().size();
+        if ( sizeNeighbour >= 2 ) {
+            // Only if this node has >= 2 neighbour, it can possibly form a triplet
+            // std::cout << "neighbourSize = " << sizeNeighbour << "\n";
+            std::vector<std::string> neiIDs;
+            neiIDs.reserve(sizeNeighbour);
+            for (Node *neighbor : node->getNeighbors()) {
+                neiIDs.push_back(neighbor->getID());
+            }
+            for (size_t i = 0; i < sizeNeighbour; i++) {
+                Node *neiNode = nodes_.find(neiIDs[i])->second;
+                for (size_t j = i+1; j < sizeNeighbour; j++){
+                    if ( (neiNode->getNeighbors()).count(nodes_.find(neiIDs[j])->second) != 0 )
+                        return true;
+                }
+            }
+        }
+    }
     return false;
 }
 
@@ -21,7 +40,7 @@ bool Graph::isConnected() const {
     bool connected = true;
     for (auto it : nodes_) {
         if ( (it.second)->getNeighbors().size() == 0 ) connected = false;
-        // std::cout << (it.second)->getNeighbors().size() << "\n";
+        std::cout << (it.second)->getNeighbors().size() << "\n";
     }
     return connected;
 }
