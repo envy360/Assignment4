@@ -6,10 +6,12 @@
 #include <sstream>
 #include <vector>
 #include <queue>
+#include<bits/stdc++.h>
 
 #include "edge.hpp"
 #include "node.hpp"
 
+using namespace std;
 
 bool Graph::hasTripletClique() const {
     // Not possible to have TripletClique if less than 3 nodes
@@ -65,29 +67,83 @@ bool Graph::isConnected() const {
         // Set visited = false
         (it.second)->setVisited(false);
     }
+    return true;
 
     // Doing BFS to see if every node is visited; starting from 1st node in the Graph
     // Get the Node* to the first node in the Adjacent Link List
-    Node* snode = (nodes_.begin())->second;
+    Node* sNode = (nodes_.begin())->second;
     // Start an empty queue
     queue<Node*> bfsqueue;
     // Set source node visited and Enqueue source node
-    snode->setVisited(true);
-    bfsqueue.push(snode);
+    sNode->setVisited(true);
+    bfsqueue.push(sNode);
     // BFS
     while ( !bfsqueue.empty()){
+        Node* vNode = bfsqueue.pop();
+        for (Node *neighbor : vNode->getNeighbors()) {
+            if ( !(neighbor->isVisited() ))
 
+        }
     }
 
 
 }
 
-// Complete this
 double Graph::getMinDistance(const std::string &nid1,
                              const std::string &nid2) const {
     assert(nodes_.size() >= 2);  // Must have at least 2 nodes
-    // To do
-    return INF;
+    // Program to find Dijkstra's shortest path using STL set
+
+    // Create a set to store vertices that are being prerocessed
+    set< pair<double, Node*> > setds;
+
+    // Create an unoredered_map for distances and initialize all
+    // distances as infinite (INF)
+    std::unordered_map<std::string, double> dist;
+    dist.reserve(nodes_.size());
+    for (auto it : nodes_) dist[it.first] = INF;
+
+    // Insert source itself in Set and initialize its distance as 0.
+    auto it1 = nodes_.find(nid1);
+    Node *sNode = it1->second;
+    setds.insert(make_pair(0.0, sNode));
+    dist[sNode->getID()] = 0;
+
+    // Looping till all shortest distance are finalized then setds will become empty
+    while (!setds.empty()) {
+        // The first vertex in Set is the minimum distance
+        // vertex, extract it from set.
+        pair<double, Node*> tmp = *(setds.begin());
+        setds.erase(setds.begin());
+
+        Node* uNode = tmp.second;
+        // Going through all uNode's neighbouring nodes
+        // and update the distances
+        for (Edge *arc : uNode->getAdjacencyList()) {
+            // Get Node* and weight of current adjacent of uNode.
+                Node* vNode = arc->getNode();
+                double weight = arc->getWeight();
+
+                // If there is shorter path to v through u.
+                if (dist[vNode->getID()] > dist[uNode->getID()] + weight)
+                {
+                    /* If distance of v is not INF then it must be in
+                        our set, so removing it and inserting again
+                        with updated less distance.
+                        Note : We extract only those vertices from Set
+                        for which distance is finalized. So for them,
+                        we would never reach here. */
+                    if (dist[vNode->getID()] != INF)
+                        setds.erase(setds.find(make_pair(dist[vNode->getID()], vNode)));
+
+                    // Updating distance of v
+                    dist[vNode->getID()] = dist[uNode->getID()] + weight;
+                    setds.insert(make_pair(dist[vNode->getID()], vNode));
+                }
+            }
+        }
+
+    return dist[nid2];
 }
 
 // Optional: complete this
