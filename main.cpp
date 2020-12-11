@@ -10,7 +10,7 @@
 #include <unordered_set>
 #include <vector>
 #include <assert.h>
-
+using namespace std;
 #include "graph.hpp"
 
 // A pair of nodes such that node1 < node2
@@ -35,7 +35,8 @@ typedef struct NodePair {
 // Make NodePair hashable
 namespace std {
     template <>
-    struct std::hash<NodePair> {
+    struct hash<NodePair> {
+    //    struct std::hash<NodePair> {
         inline size_t operator()(const NodePair& p) const {
             auto hash1 = std::hash<size_t>{}(p.index1);
             auto hash2 = std::hash<size_t>{}(p.index2);
@@ -72,6 +73,10 @@ int main() {
     generateNodePairs(500, 1.0);
     generateNodePairs(500, 2.0);
     generateNodePairs(500, 3.0);
+    /*
+    generateNodeNames(10);
+    generateNodePairs(10, 1.0);
+     */
 
     Graph graph(false);
     // Add nodes
@@ -83,7 +88,34 @@ int main() {
     }
     graph.printGraph();
 
+    // TripletClique Test
+    cout << endl << endl << "This graph ";
+    if( graph.hasTripletClique() ) cout << "has";
+    else cout << "does not have";
+    cout << " TripletClique !!" << endl;
+
     return 0;
+}
+
+string randomCityName(){
+
+    string consonant[25] = { "b", "c", "d", "f", "g",
+                          "h", "j", "k", "l", "m", "n",
+                          "p", "q", "r", "s", "t",
+                          "v", "w", "x", "y", "z",
+                          "ch", "th", "gh", "sh"  };
+    string vowel[12] = { "a", "e", "i", "o", "u",
+                             "ee", "ae", "ea", "ai", "au", "ou",
+                             "oi" };
+
+    string cityname = "";
+        cityname = cityname + consonant[rand() % 25]
+                  + vowel[rand() % 12]
+                  + consonant[rand() %25];
+                  // + vowel[rand() % 12]
+                  // + consonant[rand() %25] ;
+
+    return cityname;
 }
 
 static void generateNodeNames(size_t n) {
@@ -92,7 +124,7 @@ static void generateNodeNames(size_t n) {
     std::unordered_set<std::string> names;
     names.reserve(n);
     while (names.size() < n) {
-        std::string name = "";  // To do: Generate a random name here
+        std::string name = randomCityName();  // To do: Generate a random name here
         names.insert(name);     // Insert will fail for duplicate names
     }
     NODE_NAMES.reserve(n);
