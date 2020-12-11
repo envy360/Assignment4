@@ -10,8 +10,13 @@
 #include <unordered_set>
 #include <vector>
 #include <assert.h>
+#include <chrono>
+
 using namespace std;
 #include "graph.hpp"
+
+typedef chrono::high_resolution_clock Clock;
+
 
 // A pair of nodes such that node1 < node2
 typedef struct NodePair {
@@ -89,10 +94,32 @@ int main() {
     graph.printGraph();
 
     // TripletClique Test
+    auto start_time = Clock::now();
     cout << endl << endl << "This graph ";
     if( graph.hasTripletClique() ) cout << "has";
     else cout << "does not have";
-    cout << " TripletClique !!" << endl;
+    cout << " a TripletClique" << endl;
+    auto end_time = Clock::now();
+    cout << "Time find triplet clique: " << chrono::duration_cast<chrono::nanoseconds>(end_time - start_time).count() << " nS" << endl << endl;
+
+    //isConnected Test
+    start_time = Clock::now();
+    cout << "This graph ";
+    if(graph.isConnected()) cout << "is connected" << endl;
+    else cout << "is not connected" << endl;
+    end_time = Clock::now();
+    cout << "Time to find connectivity: " << chrono::duration_cast<chrono::nanoseconds>(end_time - start_time).count() << " nS" << endl << endl;
+
+    //getMinDistance test
+    start_time = Clock::now();
+    cout << "minimum distance between two nodes: " << graph.getMinDistance(NODE_NAMES[6], NODE_NAMES[90]) << endl;
+    end_time = Clock::now();
+    cout << "Time to find connectivity: " << chrono::duration_cast<chrono::nanoseconds>(end_time - start_time).count() << " nS" << endl;
+
+ //DFS
+ //BFS
+ //dijsktra
+
 
     return 0;
 }
